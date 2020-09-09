@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>JavaScript & CSS Scaffolding - Laravel Docs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "JavaScript & CSS Scaffolding";
+    var mkdocs_page_input_path = "docs-7.x\\frontend.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Laravel Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../documentation/">Laravel 7.x</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../docs-8.x/documentation/">Laravel 8.x</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Laravel Docs</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>JavaScript & CSS Scaffolding</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="javascript-css-scaffolding">JavaScript &amp; CSS Scaffolding</h1>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#writing-css">Writing CSS</a></li>
+<li><a href="#writing-javascript">Writing JavaScript</a><ul>
+<li><a href="#writing-vue-components">Writing Vue Components</a></li>
+<li><a href="#using-react">Using React</a></li>
+</ul>
+</li>
+<li><a href="#adding-presets">Adding Presets</a></li>
+</ul>
+<p><a name="introduction"></a></p>
+<h2 id="introduction">Introduction</h2>
+<p>While Laravel does not dictate which JavaScript or CSS pre-processors you use, it does provide a basic starting point using <a href="https://getbootstrap.com/">Bootstrap</a>, <a href="https://reactjs.org/">React</a>, and / or <a href="https://vuejs.org/">Vue</a> that will be helpful for many applications. By default, Laravel uses <a href="https://www.npmjs.org">NPM</a> to install both of these frontend packages.</p>
+<p>The Bootstrap and Vue scaffolding provided by Laravel is located in the <code>laravel/ui</code> Composer package, which may be installed using Composer:</p>
+<pre><code>composer require laravel/ui
+</code></pre>
+<p>Once the <code>laravel/ui</code> package has been installed, you may install the frontend scaffolding using the <code>ui</code> Artisan command:</p>
+<pre><code>// Generate basic scaffolding...
+php artisan ui bootstrap
+php artisan ui vue
+php artisan ui react
+
+// Generate login / registration scaffolding...
+php artisan ui bootstrap --auth
+php artisan ui vue --auth
+php artisan ui react --auth
+</code></pre>
+<h4 id="css">CSS</h4>
+<p><a href="/docs/{{version}}/mix">Laravel Mix</a> provides a clean, expressive API over compiling SASS or Less, which are extensions of plain CSS that add variables, mixins, and other powerful features that make working with CSS much more enjoyable. In this document, we will briefly discuss CSS compilation in general; however, you should consult the full <a href="/docs/{{version}}/mix">Laravel Mix documentation</a> for more information on compiling SASS or Less.</p>
+<h4 id="javascript">JavaScript</h4>
+<p>Laravel does not require you to use a specific JavaScript framework or library to build your applications. In fact, you don't have to use JavaScript at all. However, Laravel does include some basic scaffolding to make it easier to get started writing modern JavaScript using the <a href="https://vuejs.org">Vue</a> library. Vue provides an expressive API for building robust JavaScript applications using components. As with CSS, we may use Laravel Mix to easily compile JavaScript components into a single, browser-ready JavaScript file.</p>
+<p><a name="writing-css"></a></p>
+<h2 id="writing-css">Writing CSS</h2>
+<p>After installing the <code>laravel/ui</code> Composer package and <a href="#introduction">generating the frontend scaffolding</a>, Laravel's <code>package.json</code> file will include the <code>bootstrap</code> package to help you get started prototyping your application's frontend using Bootstrap. However, feel free to add or remove packages from the <code>package.json</code> file as needed for your own application. You are not required to use the Bootstrap framework to build your Laravel application - it is provided as a good starting point for those who choose to use it.</p>
+<p>Before compiling your CSS, install your project's frontend dependencies using the <a href="https://www.npmjs.org">Node package manager (NPM)</a>:</p>
+<pre><code>npm install
+</code></pre>
+<p>Once the dependencies have been installed using <code>npm install</code>, you can compile your SASS files to plain CSS using <a href="/docs/{{version}}/mix#working-with-stylesheets">Laravel Mix</a>. The <code>npm run dev</code> command will process the instructions in your <code>webpack.mix.js</code> file. Typically, your compiled CSS will be placed in the <code>public/css</code> directory:</p>
+<pre><code>npm run dev
+</code></pre>
+<p>The <code>webpack.mix.js</code> file included with Laravel's frontend scaffolding will compile the <code>resources/sass/app.scss</code> SASS file. This <code>app.scss</code> file imports a file of SASS variables and loads Bootstrap, which provides a good starting point for most applications. Feel free to customize the <code>app.scss</code> file however you wish or even use an entirely different pre-processor by <a href="/docs/{{version}}/mix">configuring Laravel Mix</a>.</p>
+<p><a name="writing-javascript"></a></p>
+<h2 id="writing-javascript">Writing JavaScript</h2>
+<p>All of the JavaScript dependencies required by your application can be found in the <code>package.json</code> file in the project's root directory. This file is similar to a <code>composer.json</code> file except it specifies JavaScript dependencies instead of PHP dependencies. You can install these dependencies using the <a href="https://www.npmjs.org">Node package manager (NPM)</a>:</p>
+<pre><code>npm install
+</code></pre>
+<blockquote>
+<p>{tip} By default, the Laravel <code>package.json</code> file includes a few packages such as <code>lodash</code> and <code>axios</code> to help you get started building your JavaScript application. Feel free to add or remove from the <code>package.json</code> file as needed for your own application.</p>
+</blockquote>
+<p>Once the packages are installed, you can use the <code>npm run dev</code> command to <a href="/docs/{{version}}/mix">compile your assets</a>. Webpack is a module bundler for modern JavaScript applications. When you run the <code>npm run dev</code> command, Webpack will execute the instructions in your <code>webpack.mix.js</code> file:</p>
+<pre><code>npm run dev
+</code></pre>
+<p>By default, the Laravel <code>webpack.mix.js</code> file compiles your SASS and the <code>resources/js/app.js</code> file. Within the <code>app.js</code> file you may register your Vue components or, if you prefer a different framework, configure your own JavaScript application. Your compiled JavaScript will typically be placed in the <code>public/js</code> directory.</p>
+<blockquote>
+<p>{tip} The <code>app.js</code> file will load the <code>resources/js/bootstrap.js</code> file which bootstraps and configures Vue, Axios, jQuery, and all other JavaScript dependencies. If you have additional JavaScript dependencies to configure, you may do so in this file.</p>
+</blockquote>
+<p><a name="writing-vue-components"></a></p>
+<h3 id="writing-vue-components">Writing Vue Components</h3>
+<p>When using the <code>laravel/ui</code> package to scaffold your frontend, an <code>ExampleComponent.vue</code> Vue component will be placed in the <code>resources/js/components</code> directory. The <code>ExampleComponent.vue</code> file is an example of a <a href="https://vuejs.org/guide/single-file-components">single file Vue component</a> which defines its JavaScript and HTML template in the same file. Single file components provide a very convenient approach to building JavaScript driven applications. The example component is registered in your <code>app.js</code> file:</p>
+<pre><code>Vue.component(
+    'example-component',
+    require('./components/ExampleComponent.vue').default
+);
+</code></pre>
+<p>To use the component in your application, you may drop it into one of your HTML templates. For example, after running the <code>php artisan ui vue --auth</code> Artisan command to scaffold your application's authentication and registration screens, you could drop the component into the <code>home.blade.php</code> Blade template:</p>
+<pre><code>@extends('layouts.app')
+
+@section('content')
+    &lt;example-component&gt;&lt;/example-component&gt;
+@endsection
+</code></pre>
+<blockquote>
+<p>{tip} Remember, you should run the <code>npm run dev</code> command each time you change a Vue component. Or, you may run the <code>npm run watch</code> command to monitor and automatically recompile your components each time they are modified.</p>
+</blockquote>
+<p>If you are interested in learning more about writing Vue components, you should read the <a href="https://vuejs.org/guide/">Vue documentation</a>, which provides a thorough, easy-to-read overview of the entire Vue framework.</p>
+<p><a name="using-react"></a></p>
+<h3 id="using-react">Using React</h3>
+<p>If you prefer to use React to build your JavaScript application, Laravel makes it a cinch to swap the Vue scaffolding with React scaffolding:</p>
+<pre><code>composer require laravel/ui
+
+// Generate basic scaffolding...
+php artisan ui react
+
+// Generate login / registration scaffolding...
+php artisan ui react --auth
+</code></pre>
+<p><a name="adding-presets"></a></p>
+<h2 id="adding-presets">Adding Presets</h2>
+<p>Presets are "macroable", which allows you to add additional methods to the <code>UiCommand</code> class at runtime. For example, the following code adds a <code>nextjs</code> method to the <code>UiCommand</code> class. Typically, you should declare preset macros in a <a href="/docs/{{version}}/providers">service provider</a>:</p>
+<pre><code>use Laravel\Ui\UiCommand;
+
+UiCommand::macro('nextjs', function (UiCommand $command) {
+    // Scaffold your frontend...
+});
+</code></pre>
+<p>Then, you may call the new preset via the <code>ui</code> command:</p>
+<pre><code>php artisan ui nextjs
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

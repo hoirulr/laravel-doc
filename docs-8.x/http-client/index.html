@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>HTTP Client - Laravel Docs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "HTTP Client";
+    var mkdocs_page_input_path = "docs-8.x\\http-client.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Laravel Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../docs-7.x/documentation/">Laravel 7.x</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../documentation/">Laravel 8.x</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Laravel Docs</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>HTTP Client</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="http-client">HTTP Client</h1>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#making-requests">Making Requests</a><ul>
+<li><a href="#request-data">Request Data</a></li>
+<li><a href="#headers">Headers</a></li>
+<li><a href="#authentication">Authentication</a></li>
+<li><a href="#timeout">Timeout</a></li>
+<li><a href="#retries">Retries</a></li>
+<li><a href="#error-handling">Error Handling</a></li>
+<li><a href="#guzzle-options">Guzzle Options</a></li>
+</ul>
+</li>
+<li><a href="#testing">Testing</a><ul>
+<li><a href="#faking-responses">Faking Responses</a></li>
+<li><a href="#inspecting-requests">Inspecting Requests</a></li>
+</ul>
+</li>
+</ul>
+<p><a name="introduction"></a></p>
+<h2 id="introduction">Introduction</h2>
+<p>Laravel provides an expressive, minimal API around the <a href="http://docs.guzzlephp.org/en/stable/">Guzzle HTTP client</a>, allowing you to quickly make outgoing HTTP requests to communicate with other web applications. Laravel's wrapper around Guzzle is focused on its most common use cases and a wonderful developer experience.</p>
+<p>Before getting started, you should ensure that you have installed the Guzzle package as a dependency of your application. By default, Laravel automatically includes this dependency:</p>
+<pre><code>composer require guzzlehttp/guzzle
+</code></pre>
+<p><a name="making-requests"></a></p>
+<h2 id="making-requests">Making Requests</h2>
+<p>To make requests, you may use the <code>get</code>, <code>post</code>, <code>put</code>, <code>patch</code>, and <code>delete</code> methods. First, let's examine how to make a basic <code>GET</code> request:</p>
+<pre><code>use Illuminate\Support\Facades\Http;
+
+$response = Http::get('http://test.com');
+</code></pre>
+<p>The <code>get</code> method returns an instance of <code>Illuminate\Http\Client\Response</code>, which provides a variety of methods that may be used to inspect the response:</p>
+<pre><code>$response-&gt;body() : string;
+$response-&gt;json() : array|mixed;
+$response-&gt;status() : int;
+$response-&gt;ok() : bool;
+$response-&gt;successful() : bool;
+$response-&gt;failed() : bool;
+$response-&gt;serverError() : bool;
+$response-&gt;clientError() : bool;
+$response-&gt;header($header) : string;
+$response-&gt;headers() : array;
+</code></pre>
+<p>The <code>Illuminate\Http\Client\Response</code> object also implements the PHP <code>ArrayAccess</code> interface, allowing you to access JSON response data directly on the response:</p>
+<pre><code>return Http::get('http://test.com/users/1')['name'];
+</code></pre>
+<p><a name="request-data"></a></p>
+<h3 id="request-data">Request Data</h3>
+<p>Of course, it is common when using <code>POST</code>, <code>PUT</code>, and <code>PATCH</code> to send additional data with your request. So, these methods accept an array of data as their second argument. By default, data will be sent using the <code>application/json</code> content type:</p>
+<pre><code>$response = Http::post('http://test.com/users', [
+    'name' =&gt; 'Steve',
+    'role' =&gt; 'Network Administrator',
+]);
+</code></pre>
+<h4 id="get-request-query-parameters">GET Request Query Parameters</h4>
+<p>When making <code>GET</code> requests, you may either append a query string to the URL directly or pass an array of key / value pairs as the second argument to the <code>get</code> method:</p>
+<pre><code>$response = Http::get('http://test.com/users', [
+    'name' =&gt; 'Taylor',
+    'page' =&gt; 1,
+]);
+</code></pre>
+<h4 id="sending-form-url-encoded-requests">Sending Form URL Encoded Requests</h4>
+<p>If you would like to send data using the <code>application/x-www-form-urlencoded</code> content type, you should call the <code>asForm</code> method before making your request:</p>
+<pre><code>$response = Http::asForm()-&gt;post('http://test.com/users', [
+    'name' =&gt; 'Sara',
+    'role' =&gt; 'Privacy Consultant',
+]);
+</code></pre>
+<h4 id="sending-a-raw-request-body">Sending A Raw Request Body</h4>
+<p>You may use the <code>withBody</code> method if you would like to provide a raw request body when making a request:</p>
+<pre><code>$response = Http::withBody(
+    base64_encode($photo), 'image/jpeg'
+)-&gt;post('http://test.com/photo');
+</code></pre>
+<h4 id="multi-part-requests">Multi-Part Requests</h4>
+<p>If you would like to send files as multi-part requests, you should call the <code>attach</code> method before making your request. This method accepts the name of the file and its contents. Optionally, you may provide a third argument which will be considered the file's filename:</p>
+<pre><code>$response = Http::attach(
+    'attachment', file_get_contents('photo.jpg'), 'photo.jpg'
+)-&gt;post('http://test.com/attachments');
+</code></pre>
+<p>Instead of passing the raw contents of a file, you may also pass a stream resource:</p>
+<pre><code>$photo = fopen('photo.jpg', 'r');
+
+$response = Http::attach(
+    'attachment', $photo, 'photo.jpg'
+)-&gt;post('http://test.com/attachments');
+</code></pre>
+<p><a name="headers"></a></p>
+<h3 id="headers">Headers</h3>
+<p>Headers may be added to requests using the <code>withHeaders</code> method. This <code>withHeaders</code> method accepts an array of key / value pairs:</p>
+<pre><code>$response = Http::withHeaders([
+    'X-First' =&gt; 'foo',
+    'X-Second' =&gt; 'bar'
+])-&gt;post('http://test.com/users', [
+    'name' =&gt; 'Taylor',
+]);
+</code></pre>
+<p><a name="authentication"></a></p>
+<h3 id="authentication">Authentication</h3>
+<p>You may specify basic and digest authentication credentials using the <code>withBasicAuth</code> and <code>withDigestAuth</code> methods, respectively:</p>
+<pre><code>// Basic authentication...
+$response = Http::withBasicAuth('taylor@laravel.com', 'secret')-&gt;post(...);
+
+// Digest authentication...
+$response = Http::withDigestAuth('taylor@laravel.com', 'secret')-&gt;post(...);
+</code></pre>
+<h4 id="bearer-tokens">Bearer Tokens</h4>
+<p>If you would like to quickly add an <code>Authorization</code> bearer token header to the request, you may use the <code>withToken</code> method:</p>
+<pre><code>$response = Http::withToken('token')-&gt;post(...);
+</code></pre>
+<p><a name="timeout"></a></p>
+<h3 id="timeout">Timeout</h3>
+<p>The <code>timeout</code> method may be used to specify the maximum number of seconds to wait for a response:</p>
+<pre><code>$response = Http::timeout(3)-&gt;get(...);
+</code></pre>
+<p>If the given timeout is exceeded, an instance of <code>Illuminate\Http\Client\ConnectionException</code> will  be thrown.</p>
+<p><a name="retries"></a></p>
+<h3 id="retries">Retries</h3>
+<p>If you would like HTTP client to automatically retry the request if a client or server error occurs, you may use the <code>retry</code> method. The <code>retry</code> method accepts two arguments: the number of times the request should be attempted and the number of milliseconds that Laravel should wait in between attempts:</p>
+<pre><code>$response = Http::retry(3, 100)-&gt;post(...);
+</code></pre>
+<p>If all of the requests fail, an instance of <code>Illuminate\Http\Client\RequestException</code> will be thrown.</p>
+<p><a name="error-handling"></a></p>
+<h3 id="error-handling">Error Handling</h3>
+<p>Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw exceptions on client or server errors (<code>400</code> and <code>500</code> level responses from servers). You may determine if one of these errors was returned using the <code>successful</code>, <code>clientError</code>, or <code>serverError</code> methods:</p>
+<pre><code>// Determine if the status code was &gt;= 200 and &lt; 300...
+$response-&gt;successful();
+
+// Determine if the status code was &gt;= 400...
+$response-&gt;failed();
+
+// Determine if the response has a 400 level status code...
+$response-&gt;clientError();
+
+// Determine if the response has a 500 level status code...
+$response-&gt;serverError();
+</code></pre>
+<h4 id="throwing-exceptions">Throwing Exceptions</h4>
+<p>If you have a response instance and would like to throw an instance of <code>Illuminate\Http\Client\RequestException</code> if the response is a client or server error, you may use the <code>throw</code> method:</p>
+<pre><code>$response = Http::post(...);
+
+// Throw an exception if a client or server error occurred...
+$response-&gt;throw();
+
+return $response['user']['id'];
+</code></pre>
+<p>The <code>Illuminate\Http\Client\RequestException</code> instance has a public <code>$response</code> property which will allow you to inspect the returned response.</p>
+<p>The <code>throw</code> method returns the response instance if no error occurred, allowing you to chain other operations onto the <code>throw</code> method:</p>
+<pre><code>return Http::post(...)-&gt;throw()-&gt;json();
+</code></pre>
+<p><a name="guzzle-options"></a></p>
+<h3 id="guzzle-options">Guzzle Options</h3>
+<p>You may specify additional <a href="http://docs.guzzlephp.org/en/stable/request-options.html">Guzzle request options</a> using the <code>withOptions</code> method. The <code>withOptions</code> method accepts an array of key / value pairs:</p>
+<pre><code>$response = Http::withOptions([
+    'debug' =&gt; true,
+])-&gt;get('http://test.com/users');
+</code></pre>
+<p><a name="testing"></a></p>
+<h2 id="testing">Testing</h2>
+<p>Many Laravel services provide functionality to help you easily and expressively write tests, and Laravel's HTTP wrapper is no exception. The <code>Http</code> facade's <code>fake</code> method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made.</p>
+<p><a name="faking-responses"></a></p>
+<h3 id="faking-responses">Faking Responses</h3>
+<p>For example, to instruct the HTTP client to return empty, <code>200</code> status code responses for every request, you may call the <code>fake</code> method with no arguments:</p>
+<pre><code>use Illuminate\Support\Facades\Http;
+
+Http::fake();
+
+$response = Http::post(...);
+</code></pre>
+<h4 id="faking-specific-urls">Faking Specific URLs</h4>
+<p>Alternatively, you may pass an array to the <code>fake</code> method. The array's keys should represent URL patterns that you wish to fake and their associated responses. The <code>*</code> character may be used as a wildcard character. Any requests made to URLs that have not been faked will actually be executed. You may use the <code>response</code> method to construct stub / fake responses for these endpoints:</p>
+<pre><code>Http::fake([
+    // Stub a JSON response for GitHub endpoints...
+    'github.com/*' =&gt; Http::response(['foo' =&gt; 'bar'], 200, ['Headers']),
+
+    // Stub a string response for Google endpoints...
+    'google.com/*' =&gt; Http::response('Hello World', 200, ['Headers']),
+]);
+</code></pre>
+<p>If you would like to specify a fallback URL pattern that will stub all unmatched URLs, you may use a single <code>*</code> character:</p>
+<pre><code>Http::fake([
+    // Stub a JSON response for GitHub endpoints...
+    'github.com/*' =&gt; Http::response(['foo' =&gt; 'bar'], 200, ['Headers']),
+
+    // Stub a string response for all other endpoints...
+    '*' =&gt; Http::response('Hello World', 200, ['Headers']),
+]);
+</code></pre>
+<h4 id="faking-response-sequences">Faking Response Sequences</h4>
+<p>Sometimes you may need to specify that a single URL should return a series of fake responses in a specific order. You may accomplish this using the <code>Http::sequence</code> method to build the responses:</p>
+<pre><code>Http::fake([
+    // Stub a series of responses for GitHub endpoints...
+    'github.com/*' =&gt; Http::sequence()
+                            -&gt;push('Hello World', 200)
+                            -&gt;push(['foo' =&gt; 'bar'], 200)
+                            -&gt;pushStatus(404),
+]);
+</code></pre>
+<p>When all of the responses in a response sequence have been consumed, any further requests will cause the response sequence to throw an exception. If you would like to specify a default response that should be returned when a sequence is empty, you may use the <code>whenEmpty</code> method:</p>
+<pre><code>Http::fake([
+    // Stub a series of responses for GitHub endpoints...
+    'github.com/*' =&gt; Http::sequence()
+                            -&gt;push('Hello World', 200)
+                            -&gt;push(['foo' =&gt; 'bar'], 200)
+                            -&gt;whenEmpty(Http::response()),
+]);
+</code></pre>
+<p>If you would like to fake a sequence of responses but do not need to specify a specific URL pattern that should be faked, you may use the <code>Http::fakeSequence</code> method:</p>
+<pre><code>Http::fakeSequence()
+        -&gt;push('Hello World', 200)
+        -&gt;whenEmpty(Http::response());
+</code></pre>
+<h4 id="fake-callback">Fake Callback</h4>
+<p>If you require more complicated logic to determine what responses to return for certain endpoints, you may pass a callback to the <code>fake</code> method. This callback will receive an instance of <code>Illuminate\Http\Client\Request</code> and should return a response instance:</p>
+<pre><code>Http::fake(function ($request) {
+    return Http::response('Hello World', 200);
+});
+</code></pre>
+<p><a name="inspecting-requests"></a></p>
+<h3 id="inspecting-requests">Inspecting Requests</h3>
+<p>When faking responses, you may occasionally wish to inspect the requests the client receives in order to make sure your application is sending the correct data or headers. You may accomplish this by calling the <code>Http::assertSent</code> method after calling <code>Http::fake</code>.</p>
+<p>The <code>assertSent</code> method accepts a callback which will be given an <code>Illuminate\Http\Client\Request</code> instance and should return a boolean value indicating if the request matches your expectations. In order for the test to pass, at least one request must have been issued matching the given expectations:</p>
+<pre><code>Http::fake();
+
+Http::withHeaders([
+    'X-First' =&gt; 'foo',
+])-&gt;post('http://test.com/users', [
+    'name' =&gt; 'Taylor',
+    'role' =&gt; 'Developer',
+]);
+
+Http::assertSent(function ($request) {
+    return $request-&gt;hasHeader('X-First', 'foo') &amp;&amp;
+           $request-&gt;url() == 'http://test.com/users' &amp;&amp;
+           $request['name'] == 'Taylor' &amp;&amp;
+           $request['role'] == 'Developer';
+});
+</code></pre>
+<p>If needed, you may assert that a specific request was not sent using the <code>assertNotSent</code> method:</p>
+<pre><code>Http::fake();
+
+Http::post('http://test.com/users', [
+    'name' =&gt; 'Taylor',
+    'role' =&gt; 'Developer',
+]);
+
+Http::assertNotSent(function (Request $request) {
+    return $request-&gt;url() === 'http://test.com/posts';
+});
+</code></pre>
+<p>Or, if you would like to assert that no requests were sent, you may use the <code>assertNothingSent</code> method:</p>
+<pre><code>Http::fake();
+
+Http::assertNothingSent();
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

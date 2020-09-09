@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Testing: Getting Started - Laravel Docs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Testing: Getting Started";
+    var mkdocs_page_input_path = "docs-8.x\\testing.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Laravel Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../docs-7.x/documentation/">Laravel 7.x</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../documentation/">Laravel 8.x</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Laravel Docs</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Testing: Getting Started</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="testing-getting-started">Testing: Getting Started</h1>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#environment">Environment</a></li>
+<li><a href="#creating-and-running-tests">Creating &amp; Running Tests</a><ul>
+<li><a href="#artisan-test-runner">Artisan Test Runner</a></li>
+</ul>
+</li>
+</ul>
+<p><a name="introduction"></a></p>
+<h2 id="introduction">Introduction</h2>
+<p>Laravel is built with testing in mind. In fact, support for testing with PHPUnit is included out of the box and a <code>phpunit.xml</code> file is already set up for your application. The framework also ships with convenient helper methods that allow you to expressively test your applications.</p>
+<p>By default, your application's <code>tests</code> directory contains two directories: <code>Feature</code> and <code>Unit</code>. Unit tests are tests that focus on a very small, isolated portion of your code. In fact, most unit tests probably focus on a single method. Feature tests may test a larger portion of your code, including how several objects interact with each other or even a full HTTP request to a JSON endpoint.</p>
+<p>An <code>ExampleTest.php</code> file is provided in both the <code>Feature</code> and <code>Unit</code> test directories. After installing a new Laravel application, run <code>vendor/bin/phpunit</code> on the command line to run your tests.</p>
+<p><a name="environment"></a></p>
+<h2 id="environment">Environment</h2>
+<p>When running tests via <code>vendor/bin/phpunit</code>, Laravel will automatically set the configuration environment to <code>testing</code> because of the environment variables defined in the <code>phpunit.xml</code> file. Laravel also automatically configures the session and cache to the <code>array</code> driver while testing, meaning no session or cache data will be persisted while testing.</p>
+<p>You are free to define other testing environment configuration values as necessary. The <code>testing</code> environment variables may be configured in the <code>phpunit.xml</code> file, but make sure to clear your configuration cache using the <code>config:clear</code> Artisan command before running your tests!</p>
+<p>In addition, you may create a <code>.env.testing</code> file in the root of your project. This file will override the <code>.env</code> file when running PHPUnit tests or executing Artisan commands with the <code>--env=testing</code> option.</p>
+<p><a name="creating-and-running-tests"></a></p>
+<h2 id="creating-running-tests">Creating &amp; Running Tests</h2>
+<p>To create a new test case, use the <code>make:test</code> Artisan command:</p>
+<pre><code>// Create a test in the Feature directory...
+php artisan make:test UserTest
+
+// Create a test in the Unit directory...
+php artisan make:test UserTest --unit
+</code></pre>
+<blockquote>
+<p>{tip} Test stubs may be customized using <a href="/docs/{{version}}/artisan#stub-customization">stub publishing</a></p>
+</blockquote>
+<p>Once the test has been generated, you may define test methods as you normally would using PHPUnit. To run your tests, execute the <code>phpunit</code> or <code>artisan test</code> command from your terminal:</p>
+<pre><code>&lt;?php
+
+namespace Tests\Unit;
+
+use PHPUnit\Framework\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testBasicTest()
+    {
+        $this-&gt;assertTrue(true);
+    }
+}
+</code></pre>
+<blockquote>
+<p>{note} If you define your own <code>setUp</code> / <code>tearDown</code> methods within a test class, be sure to call the respective <code>parent::setUp()</code> / <code>parent::tearDown()</code> methods on the parent class.</p>
+</blockquote>
+<p><a name="artisan-test-runner"></a></p>
+<h3 id="artisan-test-runner">Artisan Test Runner</h3>
+<p>In addition to the <code>phpunit</code> command, you may use the <code>test</code> Artisan command to run your tests. The Artisan test runner provides verbose test reports in order to ease development and debugging:</p>
+<pre><code>php artisan test
+</code></pre>
+<p>Any arguments that can be passed to the <code>phpunit</code> command may also be passed to the Artisan <code>test</code> command:</p>
+<pre><code>php artisan test --group=feature --stop-on-failure
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

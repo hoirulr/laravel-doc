@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Release Notes - Laravel Docs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Release Notes";
+    var mkdocs_page_input_path = "docs-7.x\\releases.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Laravel Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../documentation/">Laravel 7.x</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../docs-8.x/documentation/">Laravel 8.x</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Laravel Docs</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Release Notes</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="release-notes">Release Notes</h1>
+<ul>
+<li><a href="#versioning-scheme">Versioning Scheme</a></li>
+<li><a href="#support-policy">Support Policy</a></li>
+<li><a href="#laravel-7">Laravel 7</a></li>
+</ul>
+<p><a name="versioning-scheme"></a></p>
+<h2 id="versioning-scheme">Versioning Scheme</h2>
+<p>Laravel and its other first-party packages follow <a href="https://semver.org">Semantic Versioning</a>. Major framework releases are released every six months (~February and ~August), while minor and patch releases may be released as often as every week. Minor and patch releases should <strong>never</strong> contain breaking changes.</p>
+<p>When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as <code>^7.0</code>, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.</p>
+<p><a name="support-policy"></a></p>
+<h2 id="support-policy">Support Policy</h2>
+<p>For LTS releases, such as Laravel 6, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year. For all additional libraries, including Lumen, only the latest release receives bug fixes. In addition, please review the database versions <a href="/docs/{{version}}/database#introduction">supported by Laravel</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Release</th>
+<th>Bug Fixes Until</th>
+<th>Security Fixes Until</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6 (LTS)</td>
+<td>September 3rd, 2019</td>
+<td>September 3rd, 2021</td>
+<td>September 3rd, 2022</td>
+</tr>
+<tr>
+<td>7</td>
+<td>March 3rd, 2020</td>
+<td>September 10th, 2020</td>
+<td>March 3rd, 2021</td>
+</tr>
+<tr>
+<td>8</td>
+<td>September 8th, 2020</td>
+<td>March 8th, 2021</td>
+<td>September 8th, 2021</td>
+</tr>
+</tbody>
+</table>
+<p><a name="laravel-7"></a></p>
+<h2 id="laravel-7">Laravel 7</h2>
+<p>Laravel 7 continues the improvements made in Laravel 6.x by introducing Laravel Sanctum, routing speed improvements, custom Eloquent casts, Blade component tags, fluent string operations, a developer focused HTTP client, first-party CORS support, improved scoping for route model binding, stub customization, database queue improvements, multiple mail drivers, query-time casts, a new <code>artisan test</code> command, and a variety of other bug fixes and usability improvements.</p>
+<h3 id="laravel-sanctum">Laravel Sanctum</h3>
+<p><em>Laravel Sanctum was built by <a href="https://github.com/taylorotwell">Taylor Otwell</a></em>.</p>
+<p>Laravel Sanctum provides a featherweight authentication system for SPAs (single page applications), mobile applications, and simple, token based APIs. Sanctum allows each user of your application to generate multiple API tokens for their account. These tokens may be granted abilities / scopes which specify which actions the tokens are allowed to perform.</p>
+<p>For more information on Laravel Sanctum, consult the <a href="/docs/{{version}}/sanctum">Sanctum documentation</a>.</p>
+<h3 id="custom-eloquent-casts">Custom Eloquent Casts</h3>
+<p><em>Custom Eloquent casts was contributed by <a href="https://github.com/taylorotwell">Taylor Otwell</a></em>.</p>
+<p>Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. You may now accomplish this by defining a class that implements the <code>CastsAttributes</code> interface.</p>
+<p>Classes that implement this interface must define a <code>get</code> and <code>set</code> methods. The <code>get</code> method is responsible for transforming a raw value from the database into a cast value, while the <code>set</code> method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in <code>json</code> cast type as a custom cast type:</p>
+<pre><code>&lt;?php
+
+namespace App\Casts;
+
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+
+class Json implements CastsAttributes
+{
+    /**
+     * Cast the given value.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  array  $attributes
+     * @return array
+     */
+    public function get($model, $key, $value, $attributes)
+    {
+        return json_decode($value, true);
+    }
+
+    /**
+     * Prepare the given value for storage.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $key
+     * @param  array  $value
+     * @param  array  $attributes
+     * @return string
+     */
+    public function set($model, $key, $value, $attributes)
+    {
+        return json_encode($value);
+    }
+}
+</code></pre>
+<p>Once you have defined a custom cast type, you may attach it to a model attribute using its class name:</p>
+<pre><code>&lt;?php
+
+namespace App;
+
+use App\Casts\Json;
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'options' =&gt; Json::class,
+    ];
+}
+</code></pre>
+<p>To learn how to write custom Eloquent casts, including custom casts that cast to value objects, please consult the <a href="/docs/{{version}}/eloquent-mutators#custom-casts">Eloquent documentation</a>.</p>
+<h3 id="blade-component-tags-improvements">Blade Component Tags &amp; Improvements</h3>
+<p><em>Blade component tags were contributed by <a href="https://spatie.be/">Spatie</a>, <a href="https://twitter.com/marcelpociot">Marcel Pociot</a>, <a href="https://twitter.com/calebporzio">Caleb Porzio</a>, <a href="https://twitter.com/driesvints">Dries Vints</a>, and <a href="https://github.com/taylorotwell">Taylor Otwell</a></em>.</p>
+<blockquote>
+<p>{tip} Blade components have been overhauled to allow tag based rendering, attribute management, component classes, inline view components, and more. Since the overhaul of Blade components is so extensive, please consult the <a href="/docs/{{version}}/blade#components">full Blade component documentation</a> to learn about this feature.</p>
+</blockquote>
+<p>In summary, a component may now have an associated class which specifies the data it accepts. All public properties and methods defined on the component class will automatically be made available to the component view. Any additional HTML attributes specified on the component may be managed using the automatically included <code>$attributes</code> variable, which is an attribute bag instance.</p>
+<p>In this example, we will assume that an <code>App\View\Components\Alert</code> component has been defined like so:</p>
+<pre><code>&lt;?php
+
+namespace App\View\Components;
+
+use Illuminate\View\Component;
+
+class Alert extends Component
+{
+    /**
+     * The alert type.
+     *
+     * @var string
+     */
+    public $type;
+
+    /**
+     * Create the component instance.
+     *
+     * @param  string  $type
+     * @return void
+     */
+    public function __construct($type)
+    {
+        $this-&gt;type = $type;
+    }
+
+    /**
+     * Get the class for the given alert type.
+     *
+     * @return string
+     */
+    public function classForType()
+    {
+        return $this-&gt;type == 'danger' ? 'alert-danger' : 'alert-warning';
+    }
+
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\View\View|string
+     */
+    public function render()
+    {
+        return view('components.alert');
+    }
+}
+</code></pre>
+<p>And, assuming the component's Blade template has been defined like so:</p>
+<pre><code>&lt;!-- /resources/views/components/alert.blade.php --&gt;
+
+&lt;div class="alert {{ $classForType }}" {{ $attributes }}&gt;
+    {{ $heading }}
+
+    {{ $slot }}
+&lt;/div&gt;
+</code></pre>
+<p>The component may be rendered in another Blade view using the component's tag:</p>
+<pre><code>&lt;x-alert type="error" class="mb-4"&gt;
+    &lt;x-slot name="heading"&gt;
+        Alert content...
+    &lt;/x-slot&gt;
+
+    Default slot content...
+&lt;/x-alert&gt;
+</code></pre>
+<p>As mentioned, this is just a very small sample of the functionality of the Blade component overhaul in Laravel 7 and does not demonstrate anonymous components, inline view components, and a variety of other features. Please consult the <a href="/docs/{{version}}/blade#components">full Blade component documentation</a> to learn about this feature.</p>
+<blockquote>
+<p>{note} The previous <code>@component</code> syntax for Blade components has not and will not be removed.</p>
+</blockquote>
+<h3 id="http-client">HTTP Client</h3>
+<p><em>The HTTP client is a wrapper of Guzzle and was contributed by <a href="https://twitter.com/adamwathan">Adam Wathan</a>, <a href="https://twitter.com/gonedark">Jason McCreary</a>, and <a href="https://github.com/taylorotwell">Taylor Otwell</a></em>.</p>
+<p>Laravel now provides an expressive, minimal API around the <a href="http://docs.guzzlephp.org/en/stable/">Guzzle HTTP client</a>, allowing you to quickly make outgoing HTTP requests to communicate with other web applications. Laravel's wrapper around Guzzle is focused on its most common use cases and a wonderful developer experience. For example, the client makes it a breeze to <code>POST</code> and interface with JSON data:</p>
+<pre><code>use Illuminate\Support\Facades\Http;
+
+$response = Http::withHeaders([
+    'X-First' =&gt; 'foo',
+    'X-Second' =&gt; 'bar'
+])-&gt;post('http://test.com/users', [
+    'name' =&gt; 'Taylor',
+]);
+
+return $response['id'];
+</code></pre>
+<p>In addition, the HTTP client provides fantastic, ergonomic testing functionality:</p>
+<pre><code>Http::fake([
+    // Stub a JSON response for GitHub endpoints...
+    'github.com/*' =&gt; Http::response(['foo' =&gt; 'bar'], 200, ['Headers']),
+
+    // Stub a string response for Google endpoints...
+    'google.com/*' =&gt; Http::response('Hello World', 200, ['Headers']),
+
+    // Stub a series of responses for Facebook endpoints...
+    'facebook.com/*' =&gt; Http::sequence()
+                            -&gt;push('Hello World', 200)
+                            -&gt;push(['foo' =&gt; 'bar'], 200)
+                            -&gt;pushStatus(404),
+]);
+</code></pre>
+<p>To learn more about all of the features of the HTTP client, please consult the <a href="/docs/{{version}}/http-client">HTTP client documentation</a>.</p>
+<h3 id="fluent-string-operations">Fluent String Operations</h3>
+<p><em>Fluent string operations were contributed by <a href="https://twitter.com/taylorotwell">Taylor Otwell</a></em>.</p>
+<p>You are likely familiar with Laravel's existing <code>Illuminate\Support\Str</code> class, which provides a variety of helpful string manipulation functions. Laravel 7 now offers a more object-oriented, fluent string manipulation library built on top of these functions. You may create a fluent <code>Illuminate\Support\Stringable</code> object using the <code>Str::of</code> method. A variety of methods may then be chained onto the object to manipulate the string:</p>
+<pre><code>return (string) Str::of('  Laravel Framework 6.x ')
+                    -&gt;trim()
+                    -&gt;replace('6.x', '7.x')
+                    -&gt;slug();
+</code></pre>
+<p>For more information on the methods available via fluent string manipulation, please consult its <a href="/docs/{{version}}/helpers#fluent-strings">full documentation</a>.</p>
+<h3 id="route-model-binding-improvements">Route Model Binding Improvements</h3>
+<p><em>Route model binding improvements were contributed by <a href="https://twitter.com/taylorotwell">Taylor Otwell</a></em>.</p>
+<h4 id="key-customization">Key Customization</h4>
+<p>Sometimes you may wish to resolve Eloquent models using a column other than <code>id</code>. To do so, Laravel 7 allows you to specify the column in the route parameter definition:</p>
+<pre><code>Route::get('api/posts/{post:slug}', function (App\Post $post) {
+    return $post;
+});
+</code></pre>
+<h4 id="automatic-scoping">Automatic Scoping</h4>
+<p>Sometimes, when implicitly binding multiple Eloquent models in a single route definition, you may wish to scope the second Eloquent model such that it must be a child of the first Eloquent model. For example, consider this situation that retrieves a blog post by slug for a specific user:</p>
+<pre><code>use App\Post;
+use App\User;
+
+Route::get('api/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
+    return $post;
+});
+</code></pre>
+<p>When using a custom keyed implicit binding as a nested route parameter, Laravel 7 will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the <code>User</code> model has a relationship named <code>posts</code> (the plural of the route parameter name) which can be used to retrieve the <code>Post</code> model.</p>
+<p>For more information on route model binding, please consult the <a href="/docs/{{version}}/routing#route-model-binding">routing documentation</a>.</p>
+<h3 id="multiple-mail-drivers">Multiple Mail Drivers</h3>
+<p><em>Multiple mail driver support was contributed by <a href="https://twitter.com/taylorotwell">Taylor Otwell</a></em>.</p>
+<p>Laravel 7 allows the configuration of multiple "mailers" for a single application. Each mailer configured within the <code>mail</code> configuration file may have its own options and even its own unique "transport", allowing your application to use different email services to send certain email messages. For example, your application might use Postmark to send transactional mail while using Amazon SES to send bulk mail.</p>
+<p>By default, Laravel will use the mailer configured as the <code>default</code> mailer in your <code>mail</code> configuration file. However, you may use the <code>mailer</code> method to send a message using a specific mailer configuration:</p>
+<pre><code>Mail::mailer('postmark')
+        -&gt;to($request-&gt;user())
+        -&gt;send(new OrderShipped($order));
+</code></pre>
+<h3 id="route-caching-speed-improvements">Route Caching Speed Improvements</h3>
+<p><em>The route caching speed improvements were contributed by upstream <a href="https://symfony.com">Symfony</a> contributors and <a href="https://twitter.com/driesvints">Dries Vints</a></em>.</p>
+<p>Laravel 7 includes a new method of matching compiled, cached routes that have been cached using the <code>route:cache</code> Artisan command. On large applications (for example, applications with 800 or more routes), these improvements can result in a <strong>2x speed improvement</strong> in requests per second on a simple "Hello World" benchmark. No changes to your application are required.</p>
+<h3 id="cors-support">CORS Support</h3>
+<p><em>CORS support was contributed by <a href="https://twitter.com/barryvdh">Barry vd. Heuvel</a></em>.</p>
+<p>Laravel 7 includes first-party support for configuring Cross-Origin Resource Sharing (CORS) <code>OPTIONS</code> request responses by integrating the popular Laravel CORS package written by Barry vd. Heuvel. A new <code>cors</code> configuration is included in the <a href="https://github.com/laravel/laravel/blob/develop/config/cors.php">default Laravel application skeleton</a>.</p>
+<p>For more information on CORS support in Laravel 7.x, please consult the <a href="/docs/{{version}}/routing#cors">CORS documentation</a>.</p>
+<h3 id="query-time-casts">Query Time Casts</h3>
+<p><em>Query time casting was contributed by <a href="https://github.com/mpbarlow">Matt Barlow</a></em>.</p>
+<p>Sometimes you may need to apply casts while executing a query, such as when selecting a raw value from a table. For example, consider the following query:</p>
+<pre><code>use App\Post;
+use App\User;
+
+$users = User::select([
+    'users.*',
+    'last_posted_at' =&gt; Post::selectRaw('MAX(created_at)')
+            -&gt;whereColumn('user_id', 'users.id')
+])-&gt;get();
+</code></pre>
+<p>The <code>last_posted_at</code> attribute on the results of this query will be a raw string. It would be convenient if we could apply a <code>date</code> cast to this attribute when executing the query. To accomplish this, we may use the <code>withCasts</code> method provided by Laravel 7:</p>
+<pre><code>$users = User::select([
+    'users.*',
+    'last_posted_at' =&gt; Post::selectRaw('MAX(created_at)')
+            -&gt;whereColumn('user_id', 'users.id')
+])-&gt;withCasts([
+    'last_posted_at' =&gt; 'date'
+])-&gt;get();
+</code></pre>
+<h3 id="mysql-8-database-queue-improvements">MySQL 8+ Database Queue Improvements</h3>
+<p><em>MySQL database queue improvements were contributed by <a href="https://github.com/themsaid">Mohamed Said</a></em>.</p>
+<p>In previous releases of Laravel, the <code>database</code> queue was not considered robust enough for production usage, due to deadlocks. However, Laravel 7 provides improvements to applications using MySQL 8+ as their database backed queue. By using the <code>FOR UPDATE SKIP LOCKED</code> clause and other SQL enhancements, the <code>database</code> driver may now safely be used in higher volume production applications.</p>
+<h3 id="artisan-test-command">Artisan <code>test</code> Command</h3>
+<p><em>The <code>test</code> command was contributed by <a href="https://twitter.com/enunomaduro">Nuno Maduro</a></em>.</p>
+<p>In addition to the <code>phpunit</code> command, you may now use the <code>test</code> Artisan command to run your tests. The Artisan test runner provides beautiful console UX and more information regarding the test that is currently running. In addition, the runner will automatically stop on the first test failure:</p>
+<pre><code>php artisan test
+</code></pre>
+<p align="center">
+<img src="https://laravel.com/img/docs/7x-release-notes-artisan-test-preview.png">
+</p>
+
+<p>Any arguments that can be passed to the <code>phpunit</code> command may also be passed to the Artisan <code>test</code> command:</p>
+<pre><code>php artisan test --group=feature
+</code></pre>
+<h3 id="markdown-mail-template-improvements">Markdown Mail Template Improvements</h3>
+<p><em>Markdown mail template improvements were contributed by <a href="https://twitter.com/taylorotwell">Taylor Otwell</a></em>.</p>
+<p>The default Markdown mail template has received a fresh, more modern design based on the Tailwind CSS color palette. Of course, this template can be published and customized according to your application's needs:</p>
+<p align="center">
+<img src="https://laravel.com/img/docs/7x-release-notes-notification-preview.png">
+</p>
+
+<p>For more information on Markdown mail, please consult the <a href="/docs/{{version}}/mail#markdown-mailables">mail documentation</a>.</p>
+<h3 id="stub-customization">Stub Customization</h3>
+<p><em>Stub customization was contributed by <a href="https://twitter.com/taylorotwell">Taylor Otwell</a></em>.</p>
+<p>The Artisan console's <code>make</code> commands are used to create a variety of classes, such as controllers, jobs, migrations, and tests. These classes are generated using "stub" files that are populated with values based on your input. However, you may sometimes wish to make small changes to files generated by Artisan. To accomplish this, Laravel 7 provides the <code>stub:publish</code> command to publish the most common stubs for customization:</p>
+<pre><code>php artisan stub:publish
+</code></pre>
+<p>The published stubs will be located within a <code>stubs</code> directory in the root of your application. Any changes you make to these stubs will be reflected when you generate their corresponding classes using Artisan <code>make</code> commands.</p>
+<h3 id="queue-maxexceptions-configuration">Queue <code>maxExceptions</code> Configuration</h3>
+<p><em>The <code>maxExceptions</code> property was contributed by <a href="https://twitter.com/themsaid">Mohamed Said</a></em>.</p>
+<p>Sometimes you may wish to specify that a job may be attempted many times, but should fail if the retries are triggered by a given number of exceptions. In Laravel 7, you may define a <code>maxExceptions</code> property on your job class:</p>
+<pre><code>&lt;?php
+
+namespace App\Jobs;
+
+class ProcessPodcast implements ShouldQueue
+{
+    /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 25;
+
+    /**
+     * The maximum number of exceptions to allow before failing.
+     *
+     * @var int
+     */
+    public $maxExceptions = 3;
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        Redis::throttle('key')-&gt;allow(10)-&gt;every(60)-&gt;then(function () {
+            // Lock obtained, process the podcast...
+        }, function () {
+            // Unable to obtain lock...
+            return $this-&gt;release(10);
+        });
+    }
+}
+</code></pre>
+<p>In this example, the job is released for ten seconds if the application is unable to obtain a Redis lock and will continue to be retried up to 25 times. However, the job will fail if three unhandled exceptions are thrown by the job.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

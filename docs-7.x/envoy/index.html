@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Laravel Envoy - Laravel Docs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Laravel Envoy";
+    var mkdocs_page_input_path = "docs-7.x\\envoy.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Laravel Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../documentation/">Laravel 7.x</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../docs-8.x/documentation/">Laravel 8.x</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Laravel Docs</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Laravel Envoy</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="laravel-envoy">Laravel Envoy</h1>
+<ul>
+<li><a href="#introduction">Introduction</a><ul>
+<li><a href="#installation">Installation</a></li>
+</ul>
+</li>
+<li><a href="#writing-tasks">Writing Tasks</a><ul>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#variables">Variables</a></li>
+<li><a href="#stories">Stories</a></li>
+<li><a href="#multiple-servers">Multiple Servers</a></li>
+</ul>
+</li>
+<li><a href="#running-tasks">Running Tasks</a><ul>
+<li><a href="#confirming-task-execution">Confirming Task Execution</a></li>
+</ul>
+</li>
+<li><a href="#notifications">Notifications</a><ul>
+<li><a href="#slack">Slack</a></li>
+<li><a href="#discord">Discord</a></li>
+<li><a href="#telegram">Telegram</a></li>
+</ul>
+</li>
+</ul>
+<p><a name="introduction"></a></p>
+<h2 id="introduction">Introduction</h2>
+<p><a href="https://github.com/laravel/envoy">Laravel Envoy</a> provides a clean, minimal syntax for defining common tasks you run on your remote servers. Using Blade style syntax, you can easily setup tasks for deployment, Artisan commands, and more. Currently, Envoy only supports the Mac and Linux operating systems.</p>
+<p><a name="installation"></a></p>
+<h3 id="installation">Installation</h3>
+<p>First, install Envoy using the Composer <code>global require</code> command:</p>
+<pre><code>composer global require laravel/envoy
+</code></pre>
+<p>Since global Composer libraries can sometimes cause package version conflicts, you may wish to consider using <code>cgr</code>, which is a drop-in replacement for the <code>composer global require</code> command. The <code>cgr</code> library's installation instructions can be <a href="https://github.com/consolidation-org/cgr">found on GitHub</a>.</p>
+<blockquote>
+<p>{note} Make sure to place the <code>$HOME/.config/composer/vendor/bin</code> or <code>$HOME/.composer/vendor/bin</code> directory in your PATH so the <code>envoy</code> executable is found when running the <code>envoy</code> command in your terminal.</p>
+</blockquote>
+<h4 id="updating-envoy">Updating Envoy</h4>
+<p>You may also use Composer to keep your Envoy installation up to date. Issuing the <code>composer global update</code> command will update all of your globally installed Composer packages:</p>
+<pre><code>composer global update
+</code></pre>
+<p><a name="writing-tasks"></a></p>
+<h2 id="writing-tasks">Writing Tasks</h2>
+<p>All of your Envoy tasks should be defined in an <code>Envoy.blade.php</code> file in the root of your project. Here's an example to get you started:</p>
+<pre><code>@servers(['web' =&gt; ['user@192.168.1.1']])
+
+@task('foo', ['on' =&gt; 'web'])
+    ls -la
+@endtask
+</code></pre>
+<p>As you can see, an array of <code>@servers</code> is defined at the top of the file, allowing you to reference these servers in the <code>on</code> option of your task declarations. The <code>@servers</code> declaration should always be placed on a single line. Within your <code>@task</code> declarations, you should place the Bash code that should run on your server when the task is executed.</p>
+<p>You can force a script to run locally by specifying the server's IP address as <code>127.0.0.1</code>:</p>
+<pre><code>@servers(['localhost' =&gt; '127.0.0.1'])
+</code></pre>
+<p><a name="setup"></a></p>
+<h3 id="setup">Setup</h3>
+<p>Sometimes, you may need to execute some PHP code before executing your Envoy tasks. You may use the <code>@setup</code> directive to declare variables and do other general PHP work before any of your other tasks are executed:</p>
+<pre><code>@setup
+    $now = new DateTime();
+
+    $environment = isset($env) ? $env : "testing";
+@endsetup
+</code></pre>
+<p>If you need to require other PHP files before your task is executed, you may use the <code>@include</code> directive at the top of your <code>Envoy.blade.php</code> file:</p>
+<pre><code>@include('vendor/autoload.php')
+
+@task('foo')
+    # ...
+@endtask
+</code></pre>
+<p>You may also import other Envoy files so their stories and tasks are added to yours. After they have been imported, you may execute the tasks in those files as if they were defined in your own. You should use the <code>@import</code> directive at the top of your <code>Envoy.blade.php</code> file:</p>
+<pre><code>@import('package/Envoy.blade.php')
+</code></pre>
+<p><a name="variables"></a></p>
+<h3 id="variables">Variables</h3>
+<p>If needed, you may pass option values into Envoy tasks using the command line:</p>
+<pre><code>envoy run deploy --branch=master
+</code></pre>
+<p>You may access the options in your tasks via Blade's "echo" syntax. You may also use <code>if</code> statements and loops within your tasks. For example, let's verify the presence of the <code>$branch</code> variable before executing the <code>git pull</code> command:</p>
+<pre><code>@servers(['web' =&gt; '192.168.1.1'])
+
+@task('deploy', ['on' =&gt; 'web'])
+    cd site
+
+    @if ($branch)
+        git pull origin {{ $branch }}
+    @endif
+
+    php artisan migrate
+@endtask
+</code></pre>
+<p><a name="stories"></a></p>
+<h3 id="stories">Stories</h3>
+<p>Stories group a set of tasks under a single, convenient name, allowing you to group small, focused tasks into large tasks. For instance, a <code>deploy</code> story may run the <code>git</code> and <code>composer</code> tasks by listing the task names within its definition:</p>
+<pre><code>@servers(['web' =&gt; '192.168.1.1'])
+
+@story('deploy')
+    git
+    composer
+@endstory
+
+@task('git')
+    git pull origin master
+@endtask
+
+@task('composer')
+    composer install
+@endtask
+</code></pre>
+<p>Once the story has been written, you may run it just like a typical task:</p>
+<pre><code>envoy run deploy
+</code></pre>
+<p><a name="multiple-servers"></a></p>
+<h3 id="multiple-servers">Multiple Servers</h3>
+<p>Envoy allows you to easily run a task across multiple servers. First, add additional servers to your <code>@servers</code> declaration. Each server should be assigned a unique name. Once you have defined your additional servers, list each of the servers in the task's <code>on</code> array:</p>
+<pre><code>@servers(['web-1' =&gt; '192.168.1.1', 'web-2' =&gt; '192.168.1.2'])
+
+@task('deploy', ['on' =&gt; ['web-1', 'web-2']])
+    cd site
+    git pull origin {{ $branch }}
+    php artisan migrate
+@endtask
+</code></pre>
+<h4 id="parallel-execution">Parallel Execution</h4>
+<p>By default, tasks will be executed on each server serially. In other words, a task will finish running on the first server before proceeding to execute on the second server. If you would like to run a task across multiple servers in parallel, add the <code>parallel</code> option to your task declaration:</p>
+<pre><code>@servers(['web-1' =&gt; '192.168.1.1', 'web-2' =&gt; '192.168.1.2'])
+
+@task('deploy', ['on' =&gt; ['web-1', 'web-2'], 'parallel' =&gt; true])
+    cd site
+    git pull origin {{ $branch }}
+    php artisan migrate
+@endtask
+</code></pre>
+<p><a name="running-tasks"></a></p>
+<h2 id="running-tasks">Running Tasks</h2>
+<p>To run a task or story that is defined in your <code>Envoy.blade.php</code> file, execute Envoy's <code>run</code> command, passing the name of the task or story you would like to execute. Envoy will run the task and display the output from the servers as the task is running:</p>
+<pre><code>envoy run deploy
+</code></pre>
+<p><a name="confirming-task-execution"></a></p>
+<h3 id="confirming-task-execution">Confirming Task Execution</h3>
+<p>If you would like to be prompted for confirmation before running a given task on your servers, you should add the <code>confirm</code> directive to your task declaration. This option is particularly useful for destructive operations:</p>
+<pre><code>@task('deploy', ['on' =&gt; 'web', 'confirm' =&gt; true])
+    cd site
+    git pull origin {{ $branch }}
+    php artisan migrate
+@endtask
+</code></pre>
+<p><a name="notifications"></a></p>
+<h2 id="notifications">Notifications</h2>
+<p><a name="slack"></a></p>
+<h3 id="slack">Slack</h3>
+<p>Envoy also supports sending notifications to <a href="https://slack.com">Slack</a> after each task is executed. The <code>@slack</code> directive accepts a Slack hook URL and a channel name. You may retrieve your webhook URL by creating an "Incoming WebHooks" integration in your Slack control panel. You should pass the entire webhook URL into the <code>@slack</code> directive:</p>
+<pre><code>@finished
+    @slack('webhook-url', '#bots')
+@endfinished
+</code></pre>
+<p>You may provide one of the following as the channel argument:</p>
+<div class="content-list" markdown="1">
+- To send the notification to a channel: `#channel`
+- To send the notification to a user: `@user`
+</div>
+
+<p><a name="discord"></a></p>
+<h3 id="discord">Discord</h3>
+<p>Envoy also supports sending notifications to <a href="https://discord.com">Discord</a> after each task is executed. The <code>@discord</code> directive accepts a Discord hook URL and a message. You may retrieve your webhook URL by creating a "Webhook" in your Server Settings and choosing which channel the webhook should post to. You should pass the entire Webhook URL into the <code>@discord</code> directive:</p>
+<pre><code>@finished
+    @discord('discord-webhook-url')
+@endfinished
+</code></pre>
+<p><a name="telegram"></a></p>
+<h3 id="telegram">Telegram</h3>
+<p>Envoy also supports sending notifications to <a href="https://telegram.org">Telegram</a> after each task is executed. The <code>@telegram</code> directive accepts a Telegram Bot ID and a Chat ID. You may retrieve your Bot ID by creating a new bot using <a href="https://t.me/botfather">BotFather</a>. You can retrieve a valid Chat ID using <a href="https://t.me/username_to_id_bot">@username_to_id_bot</a>. You should pass the entire Bot ID and Chat ID into the <code>@telegram</code> directive:</p>
+<pre><code>@finished
+    @telegram('&lt;bot-id&gt;','&lt;chat-id&gt;')
+@endfinished
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Resetting Passwords - Laravel Docs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Resetting Passwords";
+    var mkdocs_page_input_path = "docs-8.x\\passwords.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Laravel Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../docs-7.x/documentation/">Laravel 7.x</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../documentation/">Laravel 8.x</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Laravel Docs</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Resetting Passwords</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="resetting-passwords">Resetting Passwords</h1>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#resetting-database">Database Considerations</a></li>
+<li><a href="#resetting-routing">Routing</a></li>
+<li><a href="#resetting-views">Views</a></li>
+<li><a href="#after-resetting-passwords">After Resetting Passwords</a></li>
+<li><a href="#password-customization">Customization</a></li>
+</ul>
+<p><a name="introduction"></a></p>
+<h2 id="introduction">Introduction</h2>
+<blockquote>
+<p>{tip} <strong>Want to get started fast?</strong> Install the <code>laravel/jetstream</code> Composer package and run <code>php artisan jetstream:install livewire/inertia</code> in a fresh Laravel application. After migrating your database, navigate your browser to <code>http://your-app.test/register</code> or any other URL that is assigned to your application. This single command will take care of scaffolding your entire authentication system, including resetting passwords!</p>
+</blockquote>
+<p>Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets.</p>
+<blockquote>
+<p>{note} Before using the password reset features of Laravel, your user must use the <code>Illuminate\Notifications\Notifiable</code> trait.</p>
+</blockquote>
+<p><a name="resetting-database"></a></p>
+<h2 id="database-considerations">Database Considerations</h2>
+<p>To get started, verify that your <code>App\Models\User</code> model implements the <code>Illuminate\Contracts\Auth\CanResetPassword</code> contract. The <code>App\Models\User</code> model included with the framework already implements this interface, and uses the <code>Illuminate\Auth\Passwords\CanResetPassword</code> trait to include the methods needed to implement the interface.</p>
+<h4 id="generating-the-reset-token-table-migration">Generating The Reset Token Table Migration</h4>
+<p>Next, a table must be created to store the password reset tokens. The migration for this table is included in the <code>laravel/jetstream</code> Composer package. After installing the <code>laravel/jetstream</code> package, you may use the <code>migrate</code> command to create the password reset token database table:</p>
+<pre><code>composer require laravel/jetstream
+
+php artisan jetstream:install livewire/inertia
+
+php artisan migrate
+</code></pre>
+<p><a name="resetting-routing"></a></p>
+<h2 id="routing">Routing</h2>
+<p>All of the routes needed to perform password resets may be generated using the <code>laravel/jetstream</code> Composer package:</p>
+<pre><code>composer require laravel/jetstream
+
+php artisan jetstream:install livewire/inertia
+</code></pre>
+<p><a name="resetting-views"></a></p>
+<h2 id="views">Views</h2>
+<p>To generate all of the necessary view for resetting passwords, you may use the <code>laravel/jetstream</code> Composer package:</p>
+<pre><code>composer require laravel/jetstream
+
+php artisan jetstream:install livewire/inertia
+</code></pre>
+<p>These views are placed in the <code>resources/views/auth</code> directory. You are free to customize them as needed for your application.</p>
+<p><a name="after-resetting-passwords"></a></p>
+<h2 id="after-resetting-passwords">After Resetting Passwords</h2>
+<p>Once you have defined the routes and views to reset your user's passwords, you may access the route in your browser at <code>/password/reset</code>. The controllers included in the Laravel Jetstream package already includes the logic to send the password reset link emails as well as the logic to reset user passwords.</p>
+<blockquote>
+<p>{note} By default, password reset tokens expire after one hour. You may change this via the password reset <code>expire</code> option in your <code>config/auth.php</code> file.</p>
+</blockquote>
+<p><a name="password-customization"></a></p>
+<h2 id="customization">Customization</h2>
+<h4 id="reset-email-customization">Reset Email Customization</h4>
+<p>You may easily modify the notification class used to send the password reset link to the user. To get started, override the <code>sendPasswordResetNotification</code> method on your <code>User</code> model. Within this method, you may send the notification using any notification class you choose. The password reset <code>$token</code> is the first argument received by the method:</p>
+<pre><code>/**
+ * Send the password reset notification.
+ *
+ * @param  string  $token
+ * @return void
+ */
+public function sendPasswordResetNotification($token)
+{
+    $this-&gt;notify(new ResetPasswordNotification($token));
+}
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

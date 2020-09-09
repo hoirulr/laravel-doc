@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>URL Generation - Laravel Docs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "URL Generation";
+    var mkdocs_page_input_path = "docs-7.x\\urls.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Laravel Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../documentation/">Laravel 7.x</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../docs-8.x/documentation/">Laravel 8.x</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Laravel Docs</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>URL Generation</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="url-generation">URL Generation</h1>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#the-basics">The Basics</a><ul>
+<li><a href="#generating-basic-urls">Generating Basic URLs</a></li>
+<li><a href="#accessing-the-current-url">Accessing The Current URL</a></li>
+</ul>
+</li>
+<li><a href="#urls-for-named-routes">URLs For Named Routes</a><ul>
+<li><a href="#signed-urls">Signed URLs</a></li>
+</ul>
+</li>
+<li><a href="#urls-for-controller-actions">URLs For Controller Actions</a></li>
+<li><a href="#default-values">Default Values</a></li>
+</ul>
+<p><a name="introduction"></a></p>
+<h2 id="introduction">Introduction</h2>
+<p>Laravel provides several helpers to assist you in generating URLs for your application. These are mainly helpful when building links in your templates and API responses, or when generating redirect responses to another part of your application.</p>
+<p><a name="the-basics"></a></p>
+<h2 id="the-basics">The Basics</h2>
+<p><a name="generating-basic-urls"></a></p>
+<h3 id="generating-basic-urls">Generating Basic URLs</h3>
+<p>The <code>url</code> helper may be used to generate arbitrary URLs for your application. The generated URL will automatically use the scheme (HTTP or HTTPS) and host from the current request:</p>
+<pre><code>$post = App\Post::find(1);
+
+echo url("/posts/{$post-&gt;id}");
+
+// http://example.com/posts/1
+</code></pre>
+<p><a name="accessing-the-current-url"></a></p>
+<h3 id="accessing-the-current-url">Accessing The Current URL</h3>
+<p>If no path is provided to the <code>url</code> helper, a <code>Illuminate\Routing\UrlGenerator</code> instance is returned, allowing you to access information about the current URL:</p>
+<pre><code>// Get the current URL without the query string...
+echo url()-&gt;current();
+
+// Get the current URL including the query string...
+echo url()-&gt;full();
+
+// Get the full URL for the previous request...
+echo url()-&gt;previous();
+</code></pre>
+<p>Each of these methods may also be accessed via the <code>URL</code> <a href="/docs/{{version}}/facades">facade</a>:</p>
+<pre><code>use Illuminate\Support\Facades\URL;
+
+echo URL::current();
+</code></pre>
+<p><a name="urls-for-named-routes"></a></p>
+<h2 id="urls-for-named-routes">URLs For Named Routes</h2>
+<p>The <code>route</code> helper may be used to generate URLs to named routes. Named routes allow you to generate URLs without being coupled to the actual URL defined on the route. Therefore, if the route's URL changes, no changes need to be made to your <code>route</code> function calls. For example, imagine your application contains a route defined like the following:</p>
+<pre><code>Route::get('/post/{post}', function () {
+    //
+})-&gt;name('post.show');
+</code></pre>
+<p>To generate a URL to this route, you may use the <code>route</code> helper like so:</p>
+<pre><code>echo route('post.show', ['post' =&gt; 1]);
+
+// http://example.com/post/1
+</code></pre>
+<p>You will often be generating URLs using the primary key of <a href="/docs/{{version}}/eloquent">Eloquent models</a>. For this reason, you may pass Eloquent models as parameter values. The <code>route</code> helper will automatically extract the model's primary key:</p>
+<pre><code>echo route('post.show', ['post' =&gt; $post]);
+</code></pre>
+<p>The <code>route</code> helper may also be used to generate URLs for routes with multiple parameters:</p>
+<pre><code>Route::get('/post/{post}/comment/{comment}', function () {
+    //
+})-&gt;name('comment.show');
+
+echo route('comment.show', ['post' =&gt; 1, 'comment' =&gt; 3]);
+
+// http://example.com/post/1/comment/3
+</code></pre>
+<p><a name="signed-urls"></a></p>
+<h3 id="signed-urls">Signed URLs</h3>
+<p>Laravel allows you to easily create "signed" URLs to named routes. These URLs have a "signature" hash appended to the query string which allows Laravel to verify that the URL has not been modified since it was created. Signed URLs are especially useful for routes that are publicly accessible yet need a layer of protection against URL manipulation.</p>
+<p>For example, you might use signed URLs to implement a public "unsubscribe" link that is emailed to your customers. To create a signed URL to a named route, use the <code>signedRoute</code> method of the <code>URL</code> facade:</p>
+<pre><code>use Illuminate\Support\Facades\URL;
+
+return URL::signedRoute('unsubscribe', ['user' =&gt; 1]);
+</code></pre>
+<p>If you would like to generate a temporary signed route URL that expires, you may use the <code>temporarySignedRoute</code> method:</p>
+<pre><code>use Illuminate\Support\Facades\URL;
+
+return URL::temporarySignedRoute(
+    'unsubscribe', now()-&gt;addMinutes(30), ['user' =&gt; 1]
+);
+</code></pre>
+<h4 id="validating-signed-route-requests">Validating Signed Route Requests</h4>
+<p>To verify that an incoming request has a valid signature, you should call the <code>hasValidSignature</code> method on the incoming <code>Request</code>:</p>
+<pre><code>use Illuminate\Http\Request;
+
+Route::get('/unsubscribe/{user}', function (Request $request) {
+    if (! $request-&gt;hasValidSignature()) {
+        abort(401);
+    }
+
+    // ...
+})-&gt;name('unsubscribe');
+</code></pre>
+<p>Alternatively, you may assign the <code>Illuminate\Routing\Middleware\ValidateSignature</code> middleware to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's <code>routeMiddleware</code> array:</p>
+<pre><code>/**
+ * The application's route middleware.
+ *
+ * These middleware may be assigned to groups or used individually.
+ *
+ * @var array
+ */
+protected $routeMiddleware = [
+    'signed' =&gt; \Illuminate\Routing\Middleware\ValidateSignature::class,
+];
+</code></pre>
+<p>Once you have registered the middleware in your kernel, you may attach it to a route. If the incoming request does not have a valid signature, the middleware will automatically return a <code>403</code> error response:</p>
+<pre><code>Route::post('/unsubscribe/{user}', function (Request $request) {
+    // ...
+})-&gt;name('unsubscribe')-&gt;middleware('signed');
+</code></pre>
+<p><a name="urls-for-controller-actions"></a></p>
+<h2 id="urls-for-controller-actions">URLs For Controller Actions</h2>
+<p>The <code>action</code> function generates a URL for the given controller action. You do not need to pass the full namespace of the controller. Instead, pass the controller class name relative to the <code>App\Http\Controllers</code> namespace:</p>
+<pre><code>$url = action('HomeController@index');
+</code></pre>
+<p>You may also reference actions with a "callable" array syntax:</p>
+<pre><code>use App\Http\Controllers\HomeController;
+
+$url = action([HomeController::class, 'index']);
+</code></pre>
+<p>If the controller method accepts route parameters, you may pass them as the second argument to the function:</p>
+<pre><code>$url = action('UserController@profile', ['id' =&gt; 1]);
+</code></pre>
+<p><a name="default-values"></a></p>
+<h2 id="default-values">Default Values</h2>
+<p>For some applications, you may wish to specify request-wide default values for certain URL parameters. For example, imagine many of your routes define a <code>{locale}</code> parameter:</p>
+<pre><code>Route::get('/{locale}/posts', function () {
+    //
+})-&gt;name('post.index');
+</code></pre>
+<p>It is cumbersome to always pass the <code>locale</code> every time you call the <code>route</code> helper. So, you may use the <code>URL::defaults</code> method to define a default value for this parameter that will always be applied during the current request. You may wish to call this method from a <a href="/docs/{{version}}/middleware#assigning-middleware-to-routes">route middleware</a> so that you have access to the current request:</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Support\Facades\URL;
+
+class SetDefaultLocaleForUrls
+{
+    public function handle($request, Closure $next)
+    {
+        URL::defaults(['locale' =&gt; $request-&gt;user()-&gt;locale]);
+
+        return $next($request);
+    }
+}
+</code></pre>
+<p>Once the default value for the <code>locale</code> parameter has been set, you are no longer required to pass its value when generating URLs via the <code>route</code> helper.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

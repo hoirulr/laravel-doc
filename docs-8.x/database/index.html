@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Database: Getting Started - Laravel Docs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Database: Getting Started";
+    var mkdocs_page_input_path = "docs-8.x\\database.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Laravel Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../docs-7.x/documentation/">Laravel 7.x</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../documentation/">Laravel 8.x</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Laravel Docs</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Database: Getting Started</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="database-getting-started">Database: Getting Started</h1>
+<ul>
+<li><a href="#introduction">Introduction</a><ul>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#read-and-write-connections">Read &amp; Write Connections</a></li>
+<li><a href="#using-multiple-database-connections">Using Multiple Database Connections</a></li>
+</ul>
+</li>
+<li><a href="#running-queries">Running Raw SQL Queries</a></li>
+<li><a href="#listening-for-query-events">Listening For Query Events</a></li>
+<li><a href="#database-transactions">Database Transactions</a></li>
+</ul>
+<p><a name="introduction"></a></p>
+<h2 id="introduction">Introduction</h2>
+<p>Laravel makes interacting with databases extremely simple across a variety of database backends using either raw SQL, the <a href="/docs/{{version}}/queries">fluent query builder</a>, and the <a href="/docs/{{version}}/eloquent">Eloquent ORM</a>. Currently, Laravel supports four databases:</p>
+<div class="content-list" markdown="1">
+- MySQL 5.6+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))
+- PostgreSQL 9.4+ ([Version Policy](https://www.postgresql.org/support/versioning/))
+- SQLite 3.8.8+
+- SQL Server 2017+ ([Version Policy](https://support.microsoft.com/en-us/lifecycle/search))
+</div>
+
+<p><a name="configuration"></a></p>
+<h3 id="configuration">Configuration</h3>
+<p>The database configuration for your application is located at <code>config/database.php</code>. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for most of the supported database systems are provided in this file.</p>
+<p>By default, Laravel's sample <a href="/docs/{{version}}/configuration#environment-configuration">environment configuration</a> is ready to use with <a href="/docs/{{version}}/homestead">Laravel Homestead</a>, which is a convenient virtual machine for doing Laravel development on your local machine. You are free to modify this configuration as needed for your local database.</p>
+<h4 id="sqlite-configuration">SQLite Configuration</h4>
+<p>After creating a new SQLite database using a command such as <code>touch database/database.sqlite</code>, you can easily configure your environment variables to point to this newly created database by using the database's absolute path:</p>
+<pre><code>DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/to/database.sqlite
+</code></pre>
+<p>To enable foreign key constraints for SQLite connections, you should set the <code>DB_FOREIGN_KEYS</code> environment variable to <code>true</code>:</p>
+<pre><code>DB_FOREIGN_KEYS=true
+</code></pre>
+<h4 id="configuration-using-urls">Configuration Using URLs</h4>
+<p>Typically, database connections are configured using multiple configuration values such as <code>host</code>, <code>database</code>, <code>username</code>, <code>password</code>, etc. Each of these configuration values has its own corresponding environment variable. This means that when configuring your database connection information on a production server, you need to manage several environment variables.</p>
+<p>Some managed database providers such as Heroku provide a single database "URL" that contains all of the connection information for the database in a single string. An example database URL may look something like the following:</p>
+<pre><code>mysql://root:password@127.0.0.1/forge?charset=UTF-8
+</code></pre>
+<p>These URLs typically follow a standard schema convention:</p>
+<pre><code>driver://username:password@host:port/database?options
+</code></pre>
+<p>For convenience, Laravel supports these URLs as an alternative to configuring your database with multiple configuration options. If the <code>url</code> (or corresponding <code>DATABASE_URL</code> environment variable) configuration option is present, it will be used to extract the database connection and credential information.</p>
+<p><a name="read-and-write-connections"></a></p>
+<h3 id="read-write-connections">Read &amp; Write Connections</h3>
+<p>Sometimes you may wish to use one database connection for SELECT statements, and another for INSERT, UPDATE, and DELETE statements. Laravel makes this a breeze, and the proper connections will always be used whether you are using raw queries, the query builder, or the Eloquent ORM.</p>
+<p>To see how read / write connections should be configured, let's look at this example:</p>
+<pre><code>'mysql' =&gt; [
+    'read' =&gt; [
+        'host' =&gt; [
+            '192.168.1.1',
+            '196.168.1.2',
+        ],
+    ],
+    'write' =&gt; [
+        'host' =&gt; [
+            '196.168.1.3',
+        ],
+    ],
+    'sticky' =&gt; true,
+    'driver' =&gt; 'mysql',
+    'database' =&gt; 'database',
+    'username' =&gt; 'root',
+    'password' =&gt; '',
+    'charset' =&gt; 'utf8mb4',
+    'collation' =&gt; 'utf8mb4_unicode_ci',
+    'prefix' =&gt; '',
+],
+</code></pre>
+<p>Note that three keys have been added to the configuration array: <code>read</code>, <code>write</code> and <code>sticky</code>. The <code>read</code> and <code>write</code> keys have array values containing a single key: <code>host</code>. The rest of the database options for the <code>read</code> and <code>write</code> connections will be merged from the main <code>mysql</code> array.</p>
+<p>You only need to place items in the <code>read</code> and <code>write</code> arrays if you wish to override the values from the main array. So, in this case, <code>192.168.1.1</code> will be used as the host for the "read" connection, while <code>192.168.1.3</code> will be used for the "write" connection. The database credentials, prefix, character set, and all other options in the main <code>mysql</code> array will be shared across both connections.</p>
+<h4 id="the-sticky-option">The <code>sticky</code> Option</h4>
+<p>The <code>sticky</code> option is an <em>optional</em> value that can be used to allow the immediate reading of records that have been written to the database during the current request cycle. If the <code>sticky</code> option is enabled and a "write" operation has been performed against the database during the current request cycle, any further "read" operations will use the "write" connection. This ensures that any data written during the request cycle can be immediately read back from the database during that same request. It is up to you to decide if this is the desired behavior for your application.</p>
+<p><a name="using-multiple-database-connections"></a></p>
+<h3 id="using-multiple-database-connections">Using Multiple Database Connections</h3>
+<p>When using multiple connections, you may access each connection via the <code>connection</code> method on the <code>DB</code> facade. The <code>name</code> passed to the <code>connection</code> method should correspond to one of the connections listed in your <code>config/database.php</code> configuration file:</p>
+<pre><code>$users = DB::connection('foo')-&gt;select(...);
+</code></pre>
+<p>You may also access the raw, underlying PDO instance using the <code>getPdo</code> method on a connection instance:</p>
+<pre><code>$pdo = DB::connection()-&gt;getPdo();
+</code></pre>
+<p><a name="running-queries"></a></p>
+<h2 id="running-raw-sql-queries">Running Raw SQL Queries</h2>
+<p>Once you have configured your database connection, you may run queries using the <code>DB</code> facade. The <code>DB</code> facade provides methods for each type of query: <code>select</code>, <code>update</code>, <code>insert</code>, <code>delete</code>, and <code>statement</code>.</p>
+<h4 id="running-a-select-query">Running A Select Query</h4>
+<p>To run a basic query, you may use the <code>select</code> method on the <code>DB</code> facade:</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+
+class UserController extends Controller
+{
+    /**
+     * Show a list of all of the application's users.
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        $users = DB::select('select * from users where active = ?', [1]);
+
+        return view('user.index', ['users' =&gt; $users]);
+    }
+}
+</code></pre>
+<p>The first argument passed to the <code>select</code> method is the raw SQL query, while the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the <code>where</code> clause constraints. Parameter binding provides protection against SQL injection.</p>
+<p>The <code>select</code> method will always return an <code>array</code> of results. Each result within the array will be a PHP <code>stdClass</code> object, allowing you to access the values of the results:</p>
+<pre><code>foreach ($users as $user) {
+    echo $user-&gt;name;
+}
+</code></pre>
+<h4 id="using-named-bindings">Using Named Bindings</h4>
+<p>Instead of using <code>?</code> to represent your parameter bindings, you may execute a query using named bindings:</p>
+<pre><code>$results = DB::select('select * from users where id = :id', ['id' =&gt; 1]);
+</code></pre>
+<h4 id="running-an-insert-statement">Running An Insert Statement</h4>
+<p>To execute an <code>insert</code> statement, you may use the <code>insert</code> method on the <code>DB</code> facade. Like <code>select</code>, this method takes the raw SQL query as its first argument and bindings as its second argument:</p>
+<pre><code>DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
+</code></pre>
+<h4 id="running-an-update-statement">Running An Update Statement</h4>
+<p>The <code>update</code> method should be used to update existing records in the database. The number of rows affected by the statement will be returned:</p>
+<pre><code>$affected = DB::update('update users set votes = 100 where name = ?', ['John']);
+</code></pre>
+<h4 id="running-a-delete-statement">Running A Delete Statement</h4>
+<p>The <code>delete</code> method should be used to delete records from the database. Like <code>update</code>, the number of rows affected will be returned:</p>
+<pre><code>$deleted = DB::delete('delete from users');
+</code></pre>
+<h4 id="running-a-general-statement">Running A General Statement</h4>
+<p>Some database statements do not return any value. For these types of operations, you may use the <code>statement</code> method on the <code>DB</code> facade:</p>
+<pre><code>DB::statement('drop table users');
+</code></pre>
+<p><a name="listening-for-query-events"></a></p>
+<h2 id="listening-for-query-events">Listening For Query Events</h2>
+<p>If you would like to receive each SQL query executed by your application, you may use the <code>listen</code> method. This method is useful for logging queries or debugging. You may register your query listener in a <a href="/docs/{{version}}/providers">service provider</a>:</p>
+<pre><code>&lt;?php
+
+namespace App\Providers;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        DB::listen(function ($query) {
+            // $query-&gt;sql
+            // $query-&gt;bindings
+            // $query-&gt;time
+        });
+    }
+}
+</code></pre>
+<p><a name="database-transactions"></a></p>
+<h2 id="database-transactions">Database Transactions</h2>
+<p>You may use the <code>transaction</code> method on the <code>DB</code> facade to run a set of operations within a database transaction. If an exception is thrown within the transaction <code>Closure</code>, the transaction will automatically be rolled back. If the <code>Closure</code> executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the <code>transaction</code> method:</p>
+<pre><code>DB::transaction(function () {
+    DB::table('users')-&gt;update(['votes' =&gt; 1]);
+
+    DB::table('posts')-&gt;delete();
+});
+</code></pre>
+<h4 id="handling-deadlocks">Handling Deadlocks</h4>
+<p>The <code>transaction</code> method accepts an optional second argument which defines the number of times a transaction should be reattempted when a deadlock occurs. Once these attempts have been exhausted, an exception will be thrown:</p>
+<pre><code>DB::transaction(function () {
+    DB::table('users')-&gt;update(['votes' =&gt; 1]);
+
+    DB::table('posts')-&gt;delete();
+}, 5);
+</code></pre>
+<h4 id="manually-using-transactions">Manually Using Transactions</h4>
+<p>If you would like to begin a transaction manually and have complete control over rollbacks and commits, you may use the <code>beginTransaction</code> method on the <code>DB</code> facade:</p>
+<pre><code>DB::beginTransaction();
+</code></pre>
+<p>You can rollback the transaction via the <code>rollBack</code> method:</p>
+<pre><code>DB::rollBack();
+</code></pre>
+<p>Lastly, you can commit a transaction via the <code>commit</code> method:</p>
+<pre><code>DB::commit();
+</code></pre>
+<blockquote>
+<p>{tip} The <code>DB</code> facade's transaction methods control the transactions for both the <a href="/docs/{{version}}/queries">query builder</a> and <a href="/docs/{{version}}/eloquent">Eloquent ORM</a>.</p>
+</blockquote>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

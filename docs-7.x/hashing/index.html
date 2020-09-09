@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Hashing - Laravel Docs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Hashing";
+    var mkdocs_page_input_path = "docs-7.x\\hashing.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Laravel Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../documentation/">Laravel 7.x</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../docs-8.x/documentation/">Laravel 8.x</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Laravel Docs</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Hashing</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="hashing">Hashing</h1>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#basic-usage">Basic Usage</a></li>
+</ul>
+<p><a name="introduction"></a></p>
+<h2 id="introduction">Introduction</h2>
+<p>The Laravel <code>Hash</code> <a href="/docs/{{version}}/facades">facade</a> provides secure Bcrypt and Argon2 hashing for storing user passwords. If you are using the built-in <code>LoginController</code> and <code>RegisterController</code> classes that are included with your Laravel application, they will use Bcrypt for registration and authentication by default.</p>
+<blockquote>
+<p>{tip} Bcrypt is a great choice for hashing passwords because its "work factor" is adjustable, which means that the time it takes to generate a hash can be increased as hardware power increases.</p>
+</blockquote>
+<p><a name="configuration"></a></p>
+<h2 id="configuration">Configuration</h2>
+<p>The default hashing driver for your application is configured in the <code>config/hashing.php</code> configuration file. There are currently three supported drivers: <a href="https://en.wikipedia.org/wiki/Bcrypt">Bcrypt</a> and <a href="https://en.wikipedia.org/wiki/Argon2">Argon2</a> (Argon2i and Argon2id variants).</p>
+<blockquote>
+<p>{note} The Argon2i driver requires PHP 7.2.0 or greater and the Argon2id driver requires PHP 7.3.0 or greater.</p>
+</blockquote>
+<p><a name="basic-usage"></a></p>
+<h2 id="basic-usage">Basic Usage</h2>
+<p>You may hash a password by calling the <code>make</code> method on the <code>Hash</code> facade:</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
+class UpdatePasswordController extends Controller
+{
+    /**
+     * Update the password for the user.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function update(Request $request)
+    {
+        // Validate the new password length...
+
+        $request-&gt;user()-&gt;fill([
+            'password' =&gt; Hash::make($request-&gt;newPassword)
+        ])-&gt;save();
+    }
+}
+</code></pre>
+<h4 id="adjusting-the-bcrypt-work-factor">Adjusting The Bcrypt Work Factor</h4>
+<p>If you are using the Bcrypt algorithm, the <code>make</code> method allows you to manage the work factor of the algorithm using the <code>rounds</code> option; however, the default is acceptable for most applications:</p>
+<pre><code>$hashed = Hash::make('password', [
+    'rounds' =&gt; 12,
+]);
+</code></pre>
+<h4 id="adjusting-the-argon2-work-factor">Adjusting The Argon2 Work Factor</h4>
+<p>If you are using the Argon2 algorithm, the <code>make</code> method allows you to manage the work factor of the algorithm using the <code>memory</code>, <code>time</code>, and <code>threads</code> options; however, the defaults are acceptable for most applications:</p>
+<pre><code>$hashed = Hash::make('password', [
+    'memory' =&gt; 1024,
+    'time' =&gt; 2,
+    'threads' =&gt; 2,
+]);
+</code></pre>
+<blockquote>
+<p>{tip} For more information on these options, check out the <a href="https://secure.php.net/manual/en/function.password-hash.php">official PHP documentation</a>.</p>
+</blockquote>
+<h4 id="verifying-a-password-against-a-hash">Verifying A Password Against A Hash</h4>
+<p>The <code>check</code> method allows you to verify that a given plain-text string corresponds to a given hash. However, if you are using the <code>LoginController</code> <a href="/docs/{{version}}/authentication">included with Laravel</a>, you will probably not need to use this directly, as this controller automatically calls this method:</p>
+<pre><code>if (Hash::check('plain-text', $hashedPassword)) {
+    // The passwords match...
+}
+</code></pre>
+<h4 id="checking-if-a-password-needs-to-be-rehashed">Checking If A Password Needs To Be Rehashed</h4>
+<p>The <code>needsRehash</code> function allows you to determine if the work factor used by the hasher has changed since the password was hashed:</p>
+<pre><code>if (Hash::needsRehash($hashed)) {
+    $hashed = Hash::make('plain-text');
+}
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

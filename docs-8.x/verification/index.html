@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Email Verification - Laravel Docs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Email Verification";
+    var mkdocs_page_input_path = "docs-8.x\\verification.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Laravel Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../docs-7.x/documentation/">Laravel 7.x</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../documentation/">Laravel 8.x</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Laravel Docs</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Email Verification</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="email-verification">Email Verification</h1>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#model-preparation">Model Preparation</a></li>
+<li><a href="#verification-database">Database Considerations</a></li>
+<li><a href="#verification-routing">Routing</a><ul>
+<li><a href="#protecting-routes">Protecting Routes</a></li>
+</ul>
+</li>
+<li><a href="#verification-views">Views</a></li>
+<li><a href="#events">Events</a></li>
+</ul>
+<p><a name="introduction"></a></p>
+<h2 id="introduction">Introduction</h2>
+<p>Many web applications require users to verify their email addresses before using the application. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending and verifying email verification requests.</p>
+<p><a name="model-preparation"></a></p>
+<h2 id="model-preparation">Model Preparation</h2>
+<p>To get started, verify that your <code>App\Models\User</code> model implements the <code>Illuminate\Contracts\Auth\MustVerifyEmail</code> contract:</p>
+<pre><code>&lt;?php
+
+namespace App\Models;
+
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+class User extends Authenticatable implements MustVerifyEmail
+{
+    use Notifiable;
+
+    // ...
+}
+</code></pre>
+<p>Once this interface has been added to your model, newly registered users will automatically be sent an email containing an email verification link. As you can see by examining your <code>EventServiceProvider</code>, Laravel already contains a <code>SendEmailVerificationNotification</code> listener that is attached to the <code>Illuminate\Auth\Events\Registered</code> event.</p>
+<p><a name="verification-database"></a></p>
+<h3 id="database-considerations">Database Considerations</h3>
+<h4 id="the-email-verification-column">The Email Verification Column</h4>
+<p>Next, your <code>user</code> table must contain an <code>email_verified_at</code> column to store the date and time that the email address was verified. By default, the <code>users</code> table migration included with the Laravel framework already includes this column. So, all you need to do is run your database migrations:</p>
+<pre><code>php artisan migrate
+</code></pre>
+<p><a name="verification-routing"></a></p>
+<h2 id="routing">Routing</h2>
+<p>The <a href="https://github.com/laravel/jetstream">Laravel Jetstream</a> package contains the necessary logic to send verification links and verify emails. The routes needed for this functionality are automatically registered by Jetstream, which may be installed via Composer:</p>
+<pre><code>composer require laravel/jetstream
+
+php artisan jetstream:install livewire/inertia
+</code></pre>
+<p><a name="protecting-routes"></a></p>
+<h3 id="protecting-routes">Protecting Routes</h3>
+<p><a href="/docs/{{version}}/middleware">Route middleware</a> can be used to only allow verified users to access a given route. Laravel ships with a <code>verified</code> middleware, which is defined at <code>Illuminate\Auth\Middleware\EnsureEmailIsVerified</code>. Since this middleware is already registered in your application's HTTP kernel, all you need to do is attach the middleware to a route definition:</p>
+<pre><code>Route::get('profile', function () {
+    // Only verified users may enter...
+})-&gt;middleware('verified');
+</code></pre>
+<p><a name="verification-views"></a></p>
+<h2 id="views">Views</h2>
+<p>To generate all of the necessary view for email verification, you may use the <code>laravel/jetstream</code> Composer package:</p>
+<pre><code>composer require laravel/jetstream
+
+php artisan jetstream:install livewire/inertia
+</code></pre>
+<p>The email verification view is placed in the <code>resources/views/auth/</code> directory. You are free to customize this view as needed for your application.</p>
+<p><a name="events"></a></p>
+<h2 id="events">Events</h2>
+<p>Laravel dispatches <a href="/docs/{{version}}/events">events</a> during the email verification process. You may attach listeners to these events in your <code>EventServiceProvider</code>:</p>
+<pre><code>/**
+ * The event listener mappings for the application.
+ *
+ * @var array
+ */
+protected $listen = [
+    'Illuminate\Auth\Events\Verified' =&gt; [
+        'App\Listeners\LogVerifiedUser',
+    ],
+];
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Eloquent: Collections - Laravel Docs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Eloquent: Collections";
+    var mkdocs_page_input_path = "docs-7.x\\eloquent-collections.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Laravel Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../documentation/">Laravel 7.x</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../docs-8.x/documentation/">Laravel 8.x</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Laravel Docs</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Eloquent: Collections</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="eloquent-collections">Eloquent: Collections</h1>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#available-methods">Available Methods</a></li>
+<li><a href="#custom-collections">Custom Collections</a></li>
+</ul>
+<p><a name="introduction"></a></p>
+<h2 id="introduction">Introduction</h2>
+<p>All multi-result sets returned by Eloquent are instances of the <code>Illuminate\Database\Eloquent\Collection</code> object, including results retrieved via the <code>get</code> method or accessed via a relationship. The Eloquent collection object extends the Laravel <a href="/docs/{{version}}/collections">base collection</a>, so it naturally inherits dozens of methods used to fluently work with the underlying array of Eloquent models.</p>
+<p>All collections also serve as iterators, allowing you to loop over them as if they were simple PHP arrays:</p>
+<pre><code>$users = App\User::where('active', 1)-&gt;get();
+
+foreach ($users as $user) {
+    echo $user-&gt;name;
+}
+</code></pre>
+<p>However, collections are much more powerful than arrays and expose a variety of map / reduce operations that may be chained using an intuitive interface. For example, let's remove all inactive models and gather the first name for each remaining user:</p>
+<pre><code>$users = App\User::all();
+
+$names = $users-&gt;reject(function ($user) {
+    return $user-&gt;active === false;
+})
+-&gt;map(function ($user) {
+    return $user-&gt;name;
+});
+</code></pre>
+<blockquote>
+<p>{note} While most Eloquent collection methods return a new instance of an Eloquent collection, the <code>pluck</code>, <code>keys</code>, <code>zip</code>, <code>collapse</code>, <code>flatten</code> and <code>flip</code> methods return a <a href="/docs/{{version}}/collections">base collection</a> instance. Likewise, if a <code>map</code> operation returns a collection that does not contain any Eloquent models, it will be automatically cast to a base collection.</p>
+</blockquote>
+<p><a name="available-methods"></a></p>
+<h2 id="available-methods">Available Methods</h2>
+<p>All Eloquent collections extend the base <a href="/docs/{{version}}/collections#available-methods">Laravel collection</a> object; therefore, they inherit all of the powerful methods provided by the base collection class.</p>
+<p>In addition, the <code>Illuminate\Database\Eloquent\Collection</code> class provides a superset of methods to aid with managing your model collections. Most methods return <code>Illuminate\Database\Eloquent\Collection</code> instances; however, some methods return a base <code>Illuminate\Support\Collection</code> instance.</p>
+<style>
+    #collection-method-list > p {
+        column-count: 1; -moz-column-count: 1; -webkit-column-count: 1;
+        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+    }
+
+    #collection-method-list a {
+        display: block;
+    }
+</style>
+
+<div id="collection-method-list" markdown="1">
+
+[contains](#method-contains)
+[diff](#method-diff)
+[except](#method-except)
+[find](#method-find)
+[fresh](#method-fresh)
+[intersect](#method-intersect)
+[load](#method-load)
+[loadMissing](#method-loadMissing)
+[modelKeys](#method-modelKeys)
+[makeVisible](#method-makeVisible)
+[makeHidden](#method-makeHidden)
+[only](#method-only)
+[toQuery](#method-toquery)
+[unique](#method-unique)
+
+</div>
+
+<p><a name="method-contains"></a></p>
+<h4 id="containskey-operator-null-value-null"><code>contains($key, $operator = null, $value = null)</code></h4>
+<p>The <code>contains</code> method may be used to determine if a given model instance is contained by the collection. This method accepts a primary key or a model instance:</p>
+<pre><code>$users-&gt;contains(1);
+
+$users-&gt;contains(User::find(1));
+</code></pre>
+<p><a name="method-diff"></a></p>
+<h4 id="diffitems"><code>diff($items)</code></h4>
+<p>The <code>diff</code> method returns all of the models that are not present in the given collection:</p>
+<pre><code>use App\User;
+
+$users = $users-&gt;diff(User::whereIn('id', [1, 2, 3])-&gt;get());
+</code></pre>
+<p><a name="method-except"></a></p>
+<h4 id="exceptkeys"><code>except($keys)</code></h4>
+<p>The <code>except</code> method returns all of the models that do not have the given primary keys:</p>
+<pre><code>$users = $users-&gt;except([1, 2, 3]);
+</code></pre>
+<p><a name="method-find"></a></p>
+<h4 id="findkey-collection-method-first-collection-method"><code>find($key)</code> {#collection-method .first-collection-method}</h4>
+<p>The <code>find</code> method finds a model that has a given primary key. If <code>$key</code> is a model instance, <code>find</code> will attempt to return a model matching the primary key. If <code>$key</code> is an array of keys, <code>find</code> will return all models which match the <code>$keys</code> using <code>whereIn()</code>:</p>
+<pre><code>$users = User::all();
+
+$user = $users-&gt;find(1);
+</code></pre>
+<p><a name="method-fresh"></a></p>
+<h4 id="freshwith"><code>fresh($with = [])</code></h4>
+<p>The <code>fresh</code> method retrieves a fresh instance of each model in the collection from the database. In addition, any specified relationships will be eager loaded:</p>
+<pre><code>$users = $users-&gt;fresh();
+
+$users = $users-&gt;fresh('comments');
+</code></pre>
+<p><a name="method-intersect"></a></p>
+<h4 id="intersectitems"><code>intersect($items)</code></h4>
+<p>The <code>intersect</code> method returns all of the models that are also present in the given collection:</p>
+<pre><code>use App\User;
+
+$users = $users-&gt;intersect(User::whereIn('id', [1, 2, 3])-&gt;get());
+</code></pre>
+<p><a name="method-load"></a></p>
+<h4 id="loadrelations"><code>load($relations)</code></h4>
+<p>The <code>load</code> method eager loads the given relationships for all models in the collection:</p>
+<pre><code>$users-&gt;load('comments', 'posts');
+
+$users-&gt;load('comments.author');
+</code></pre>
+<p><a name="method-loadMissing"></a></p>
+<h4 id="loadmissingrelations"><code>loadMissing($relations)</code></h4>
+<p>The <code>loadMissing</code> method eager loads the given relationships for all models in the collection if the relationships are not already loaded:</p>
+<pre><code>$users-&gt;loadMissing('comments', 'posts');
+
+$users-&gt;loadMissing('comments.author');
+</code></pre>
+<p><a name="method-modelKeys"></a></p>
+<h4 id="modelkeys"><code>modelKeys()</code></h4>
+<p>The <code>modelKeys</code> method returns the primary keys for all models in the collection:</p>
+<pre><code>$users-&gt;modelKeys();
+
+// [1, 2, 3, 4, 5]
+</code></pre>
+<p><a name="method-makeVisible"></a></p>
+<h4 id="makevisibleattributes"><code>makeVisible($attributes)</code></h4>
+<p>The <code>makeVisible</code> method makes attributes visible that are typically "hidden" on each model in the collection:</p>
+<pre><code>$users = $users-&gt;makeVisible(['address', 'phone_number']);
+</code></pre>
+<p><a name="method-makeHidden"></a></p>
+<h4 id="makehiddenattributes"><code>makeHidden($attributes)</code></h4>
+<p>The <code>makeHidden</code> method hides attributes that are typically "visible" on each model in the collection:</p>
+<pre><code>$users = $users-&gt;makeHidden(['address', 'phone_number']);
+</code></pre>
+<p><a name="method-only"></a></p>
+<h4 id="onlykeys"><code>only($keys)</code></h4>
+<p>The <code>only</code> method returns all of the models that have the given primary keys:</p>
+<pre><code>$users = $users-&gt;only([1, 2, 3]);
+</code></pre>
+<p><a name="method-toquery"></a></p>
+<h4 id="toquery"><code>toQuery()</code></h4>
+<p>The <code>toQuery</code> method returns an Eloquent query builder instance containing a <code>whereIn</code> constraint on the collection model's primary keys:</p>
+<pre><code>$users = App\User::where('status', 'VIP')-&gt;get();
+
+$users-&gt;toQuery()-&gt;update([
+    'status' =&gt; 'Administrator',
+]);
+</code></pre>
+<p><a name="method-unique"></a></p>
+<h4 id="uniquekey-null-strict-false"><code>unique($key = null, $strict = false)</code></h4>
+<p>The <code>unique</code> method returns all of the unique models in the collection. Any models of the same type with the same primary key as another model in the collection are removed.</p>
+<pre><code>$users = $users-&gt;unique();
+</code></pre>
+<p><a name="custom-collections"></a></p>
+<h2 id="custom-collections">Custom Collections</h2>
+<p>If you need to use a custom <code>Collection</code> object with your own extension methods, you may override the <code>newCollection</code> method on your model:</p>
+<pre><code>&lt;?php
+
+namespace App;
+
+use App\CustomCollection;
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    /**
+     * Create a new Eloquent Collection instance.
+     *
+     * @param  array  $models
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function newCollection(array $models = [])
+    {
+        return new CustomCollection($models);
+    }
+}
+</code></pre>
+<p>Once you have defined a <code>newCollection</code> method, you will receive an instance of your custom collection anytime Eloquent returns a <code>Collection</code> instance of that model. If you would like to use a custom collection for every model in your application, you should override the <code>newCollection</code> method on a base model class that is extended by all of your models.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
